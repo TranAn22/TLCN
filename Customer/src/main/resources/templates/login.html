@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<!-- Basic -->
+
+<head th:replace="fragments::head">
+
+</head>
+
+<body>
+<div th:replace="fragments::main-top">
+</div>
+<!-- End Main Top -->
+
+<!-- Start Main Top -->
+<header th:replace="fragments::main-header">
+</header>
+<!-- End Main Top -->
+
+<!-- Start Top Search -->
+<div th:replace="fragments::top-search">
+</div>
+<!-- End Top Search -->
+
+<!-- Start Slider -->
+<div th:replace="fragments::slider">
+</div>
+<!-- End Slider -->
+
+
+<section id="login-form">
+    <div class="noi-dung">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-md-5 mt-md-4 pb-5">
+                                <div class="form">
+                                    <h2 class="text-white fw-bold mb-2 text-uppercase">Log In</h2>
+                                    <div th:if = "${param.error}" class="text-center alert alert-warning">
+                                        <p>Invalid username or password</p>
+                                    </div>
+
+                                    <div th:if = "${param.logout}" class="text-center alert alert-success">
+                                        <p>You have been logged out</p>
+                                    </div>
+                                    <form th:action="@{/do-login}" method="post">
+                                        <p class="text-white-50 mb-5">Please enter your username and password!</p>
+                                        <div class="input-form form-outline form-white mb-4" >
+                                            <!-- <span>User name</span> -->
+                                            <input type="text" placeholder="Name" name="username" class="form-control form-control-lg">
+                                        </div>
+                                        <div class="input-form form-outline form-white mb-4">
+                                            <!-- <span>Password</span> -->
+                                            <input type="password" placeholder="Password" name="password" class="form-control form-control-lg">
+                                        </div>
+                                        <div class="input-form">
+                                            <input type="submit" value="Log In">
+                                        </div>
+                                        <br>
+                                        <div class="input-form">
+                                            <p>Don't Have An Account ? <a th:href="@{/register}">Sign up now </a></p>
+                                        </div>
+                                    </form>
+                                    <br>
+                                    <h3>Log In With Social Network</h3>
+                                    <div class="d-flex justify-content-center text-center mt-4 pt-1">
+                                        <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                                        <a href="#!" class="text-white"><i
+                                                class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
+                                        <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Start All Title Box -->
+<div th:replace="fragments::instagram-box">
+</div>
+<!-- End All Title Box -->
+<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+<!-- ALL JS FILES -->
+<div th:replace="fragments::script"></div>
+</body>
+
+</html>

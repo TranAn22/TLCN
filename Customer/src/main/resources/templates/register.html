@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<!-- Basic -->
+
+<head th:replace="fragments::head">
+
+</head>
+
+<body>
+<div th:replace="fragments::main-top">
+</div>
+<!-- End Main Top -->
+
+<!-- Start Main Top -->
+<header th:replace="fragments::main-header">
+</header>
+<!-- End Main Top -->
+
+<!-- Start Top Search -->
+<div th:replace="fragments::top-search">
+</div>
+<!-- End Top Search -->
+
+<!-- Start Slider -->
+<div th:replace="fragments::slider">
+</div>
+<!-- End Slider -->
+
+
+<section id="register-form">
+    <div class="noi-dung">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-md-5 mt-md-4 pb-5">
+                                <div class="form">
+                                    <h2 class="text-white fw-bold mb-2 text-uppercase">Register</h2>
+                                    <div th:if="${error}" class="text-center alert alert-danger">
+                                        <p th:text="${error}"></p>
+                                    </div>
+                                    <div th:if="${username}" class="text-center alert-warning">
+                                        <p th:text="${username}"></p>
+                                    </div>
+                                    <div th:if="${password}" class="text-center alert-warning">
+                                        <p th:text="${password}"></p>
+                                    </div>
+                                    <div th:if="${success}" class="text-center alert-success">
+                                        <p th:text="${success}"></p>
+                                    </div>
+                                    <form th:action="@{/do-register}" method="post" th:object="${customerDto}">
+                                        <div class="input-form form-outline form-white mb-4">
+                                            <!-- <span>User name</span> -->
+                                            <input type="text" th:field="*{firstName}" placeholder="First Name" name=""
+                                                   class="form-control form-control-lg">
+                                        </div>
+                                        <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"
+                                             th:errors="*{firstName}"
+                                        ></div>
+                                        <div class="input-form form-outline form-white mb-4">
+                                            <!-- <span>User name</span> -->
+                                            <input type="text" th:field="*{lastName}" placeholder="Last Name" name=""
+                                                   class="form-control form-control-lg">
+                                        </div>
+                                        <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}"
+                                             th:errors="*{lastName}"
+                                        ></div>
+                                        <div class="input-form form-outline form-white mb-4">
+                                            <!-- <span>User name</span> -->
+                                            <input type="email" th:field="*{username}" placeholder="Username" name=""
+                                                   class="form-control form-control-lg">
+                                        </div>
+                                        <div class="input-form form-outline form-white mb-4">
+                                            <!-- <span>Password</span> -->
+                                            <input type="password" th:field="*{password}" placeholder="Password"
+                                                   name="" class="form-control form-control-lg">
+                                        </div>
+                                        <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}"
+                                             th:errors="*{password}"
+                                        ></div>
+                                        <div class="input-form form-outline form-white mb-4">
+                                            <!-- <span>Password</span> -->
+                                            <input type="password" th:field="*{repeatPassword}"
+                                                   placeholder="Verify password" name=""
+                                                   class="form-control form-control-lg">
+                                        </div>
+                                        <div class="input-form form-outline form-white mb-4">
+                                            <p>Do You Already Have An Account ? <a th:href="@{/login}"> Sign in now </a>
+                                            </p>
+                                        </div>
+                                        <div class="input-form ">
+                                            <input type="submit" value="Sign up">
+                                        </div>
+                                    </form>
+                                    <br>
+                                    <h3>Log In With Social Network</h3>
+                                    <div class="d-flex justify-content-center text-center mt-4 pt-1">
+                                        <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                                        <a href="#!" class="text-white"><i
+                                                class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
+                                        <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ALL JS FILES -->
+<div th:replace="fragments::script"></div>
+</body>
+
+</html>
