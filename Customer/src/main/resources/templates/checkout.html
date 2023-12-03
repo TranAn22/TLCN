@@ -46,8 +46,77 @@
                         <p id="phone" th:text="${customer.phoneNumber}">
                     </div>
                     <div class="mb-3">
-                        <label for="address">Address *</label>
-                        <p th:text="${customer.address + ' ' + customer.city + ' ' + customer.country}" id="address">
+                        <form th:action="@{/save-order}" th:method="post" th:object="${order}">
+                            <div class="form-group required-field">
+                                <label>Địa chỉ nhận hàng</label>
+                                <div>
+                                    <div>Tỉnh/Thành&nbsp;&nbsp;
+                                        <select id="city" th:name="city" onchange="updateCityValue(this)">
+                                            <option value="${user_city}" selected>Chọn tỉnh thành</option>
+                                        </select>
+                                    </div>
+                                    <br>
+                                    <div>Quận/Huyện
+                                        <select id="district" th:name="district" onchange="updateDistrictValue(this)">
+                                            <option value="${user_district}" selected>Chọn quận huyện</option>
+                                        </select>
+                                    </div>
+                                    <br>
+                                    <div>Phường/Xã
+                                        <select id="ward" th:name="ward">
+                                            <option value="${user_ward}" selected>Chọn phường xã</option>
+                                        </select>
+                                    </div>
+
+<!--                                    <div>-->
+<!--                                        Tỉnh/Thành&nbsp;&nbsp;-->
+<!--                                        <select id="city" onchange="updateCityValue(this)">-->
+<!--                                            &lt;!&ndash; Options will be populated dynamically using JavaScript &ndash;&gt;-->
+<!--                                            <option value="" selected>Chọn tỉnh thành</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                    <br>-->
+<!--                                    <div>-->
+<!--                                        Quận/Huyện-->
+<!--                                        <select id="district" onchange="updateDistrictValue(this)">-->
+<!--                                            &lt;!&ndash; Options will be populated dynamically using JavaScript &ndash;&gt;-->
+<!--                                            <option value="" selected>Chọn quận huyện</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                    <br>-->
+<!--                                    <div>-->
+<!--                                        Phường/Xã-->
+<!--                                        <select id="ward">-->
+<!--                                            &lt;!&ndash; Options will be populated dynamically using JavaScript &ndash;&gt;-->
+<!--                                            <option value="" selected>Chọn phường xã</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+
+
+                                    <br>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="address">Dia Chi Cu The </label>
+                                        <div class="col-md-4">
+                                            <input id="address" th:field="*{address}" name="address"
+                                                   class="form-control input-md" type="text">
+                                        </div>
+                                    </div>
+
+                                    <!-- <textarea type="text" class="form-control"
+                                        th:text="${user_address}" name="receiver_address"
+                                        id="receiver_address" required></textarea>
+                                    <div class="invalid-feedback"></div> -->
+                                </div>
+                            </div>
+                            <div class="buttonWrapper">
+                                <button type="submit" id="submitButton"
+                                        class="submitButton pure-button pure-button-primary">
+                                    <span>Save</span>
+                                </button>
+                            </div>
+
+                        </form>
+
                     </div>
                     <hr class="mb-4">
                     <hr class="mb-4">
@@ -116,10 +185,13 @@
                         <hr>
                     </div>
                 </div>
-                <div class="col-12 d-flex shopping-box"><a th:href="@{/save-order}" class="ml-auto btn hvr-hover">Place Order</a></div>
+                <!--                <div  class="col-12 d-flex shopping-box"><a th:href="@{/save-order}" class="ml-auto btn hvr-hover">Place-->
+                <!--                    Order</a></div>-->
+
             </div>
         </div>
     </div>
+</div>
 
 </div>
 </div>
@@ -139,6 +211,171 @@
 
 <!-- ALL JS FILES -->
 <div th:replace="fragments::script"></div>
+<th:block id="js-resources">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script th:inline="javascript">
+        const url = 'https://online-gateway.ghn.vn/shiip/public-api/master-data/province';
+        const token = '0906fc3a-733e-11ee-a59f-a260851ba65c';
+        const shopid = '4655552';
+        let shipping = 0;
+        const headers = {
+            'token': token,
+            'Content-Type': 'application/json'
+        };
+        const headers_ShopId = {
+            'token': token,
+            'ShopId': shopid,
+            'Content-Type': 'application/json'
+        };
+        var callAPI = (api) => {
+            return axios.get(url, {headers})
+                .then((response) => {
+                    let row = ' <option disable value="">Chọn</option>';
+                    response.data.data.forEach(element => {
+                        row += `<option data-id="${element.ProvinceID}" value="${element.ProvinceName}">${element.ProvinceName}</option>`
+                    });
+                    document.querySelector("#city").innerHTML = row
+                    return response.data.data[0].ProvinceID;
+                });
+        }
+        var callApiDistrict = (url, requestBody) => {
+            return axios.post(url, requestBody, {headers})
+                .then((response) => {
+                    let row = '<option disabled value="">Chọn</option>';
+                    response.data.data.forEach(element => {
+                        row += `<option data-id="${element.DistrictID}" value="${element.DistrictName}">${element.DistrictName}</option>`;
+                    });
+                    document.querySelector("#district").innerHTML = row;
+                    return response.data.data[0].DistrictID;
+                })
+        };
+        var callApiWard = (url, requestBody) => {
+            return axios.post(url, requestBody, {headers})
+                .then((response) => {
+                    let row = '<option disabled value="">Chọn</option>';
+                    response.data.data.forEach(element => {
+                        row += `<option data-id="${element.WardCode}" value="${element.WardName}">${element.WardName}</option>`;
+                    });
+                    document.querySelector("#ward").innerHTML = row;
+                })
+        };
+
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        var callShipping = (url, requestBody) => {
+            return axios.get(url, {headers: headers_ShopId, params: requestBody})
+                .then((response) => {
+                    let tmp = response.data.data.total
+                    $('#in-shipping-value').val(formatNumber(tmp));
+                    shipping = response.data.data.total
+                    totalPrice = totalPrice + parseFloat(shipping);
+                    $('#in-total-price').val(formatNumber(totalPrice));
+                });
+        }
+        var callExpecteddate = (url, requestBody) => {
+            return axios.get(url, {headers: headers_ShopId, params: requestBody})
+                .then((response) => {
+                    const date = new Date(response.data.data.leadtime * 1000);
+                    const year = date.getFullYear();
+                    const month = date.getMonth() + 1; // Months are zero-based, so we add 1
+                    const day = date.getDate();
+                    // Format the date components as a date string
+                    const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+                    $('#in-expecteddate-value').val(formattedDate);
+                });
+        }
+        const citySelectElement = document.querySelector("#city");
+        const districtSelectElement = document.querySelector("#district");
+        const wardSelectElement = document.querySelector("#ward");
+
+        callAPI('https://online-gateway.ghn.vn/shiip/public-api/master-data/province')
+            .then((provinceId) => {
+                citySelectElement.addEventListener("change", () => {
+                    const selectedProvinceId = citySelectElement.options[citySelectElement.selectedIndex].dataset.id;
+                    const requestBody = {
+                        province_id: parseInt(selectedProvinceId)
+                    };
+                    callApiDistrict('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', requestBody)
+                        .then((districtId) => {
+                            districtSelectElement.addEventListener("change", () => {
+                                const selectedDistrictId = districtSelectElement.options[districtSelectElement.selectedIndex].dataset.id;
+                                const requestBody = {
+                                    district_id: parseInt(selectedDistrictId)
+                                };
+                                callApiWard('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', requestBody)
+                                    .then((wardId) => {
+                                        wardSelectElement.addEventListener("change", () => {
+                                            const selectedWardId = wardSelectElement.options[wardSelectElement.selectedIndex].dataset.id;
+                                            const requestBody = {
+                                                service_id: 53321,
+                                                from_district_id: 3695,
+                                                to_district_id: parseInt(selectedDistrictId),
+                                                to_ward_code: selectedWardId,
+                                                height: 12,
+                                                length: 34,
+                                                weight: 2500,
+                                                width: 25
+                                            };
+                                            const requestBody_Date = {
+                                                from_district_id: 3695,
+                                                from_ward_code: 90743,
+                                                to_district_id: parseInt(selectedDistrictId),
+                                                to_ward_code: selectedWardId,
+                                                service_id: 53321
+                                            };
+                                            callShipping('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', requestBody)
+                                            callExpecteddate('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime', requestBody_Date)
+                                        });
+                                    });
+                            });
+                        });
+                });
+            });
+    </script>
+    <script th:inline="javascript">
+        // Hàm gọi API để lấy dữ liệu tỉnh/thành phố
+        function updateCityValue(selectElement) {
+            var selectedCity = selectElement.value;
+            // Gọi API để lấy dữ liệu quận/huyện dựa trên tỉnh/thành phố
+            fetch('/api/districts?city=' + selectedCity)
+                .then(response => response.json())
+                .then(data => {
+                    var districtSelect = document.getElementById('district');
+                    districtSelect.innerHTML = '<option value="" selected>Chọn quận huyện</option>'; // Xóa tất cả các option hiện tại
+                    data.forEach(district => {
+                        var option = document.createElement('option');
+                        option.value = district;
+                        option.text = district;
+                        districtSelect.add(option);
+                    });
+                });
+        }
+
+        // Hàm gọi API để lấy dữ liệu phường/xã dựa trên quận/huyện
+        function updateDistrictValue(selectElement) {
+            var selectedDistrict = selectElement.value;
+            // Gọi API để lấy dữ liệu phường/xã dựa trên quận/huyện
+            fetch('/api/wards?district=' + selectedDistrict)
+                .then(response => response.json())
+                .then(data => {
+                    var wardSelect = document.getElementById('ward');
+                    wardSelect.innerHTML = '<option value="" selected>Chọn phường xã</option>'; // Xóa tất cả các option hiện tại
+                    data.forEach(ward => {
+                        var option = document.createElement('option');
+                        option.value = ward;
+                        option.text = ward;
+                        wardSelect.add(option);
+                    });
+                });
+        }
+
+
+    </script>
+
+</th:block>
+
 </body>
 
 </html>

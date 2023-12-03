@@ -23,6 +23,13 @@ public class Order {
     private double totalPrice;
     private double shippingFee;
     private String orderStatus;
+    @Column(name = "District")
+    private String District;
+    @Column(name = "Ward")
+    private String Ward;
+    @Column(name = "city")
+    private String city;
+    private String address;
     private String notes;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")

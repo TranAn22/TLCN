@@ -35,16 +35,16 @@ public class OrderServiceImpl implements OrderService {
     private CartItemRepository cartItemRepository;
 
     @Override
-    public void saveOrder(ShoppingCart cart) {
-        Order order= new Order();
-        order.setOrderStatus("PENDING");
-        order.setOrderDate(new Date());
-        order.setCustomer(cart.getCustomer());
-        order.setTotalPrice(cart.getTotalPrices());
+    public void saveOrder(ShoppingCart cart,Order order) {
+        Order order1=new Order();
+        order1.setOrderStatus("PENDING");
+        order1.setOrderDate(new Date());
+        order1.setCustomer(cart.getCustomer());
+        order1.setTotalPrice(cart.getTotalPrices());
         List<OrderDetail> orderDetailList=new ArrayList<>();
         for(CartItem item : cart.getCartItem()){
             OrderDetail orderDetail=new OrderDetail();
-            orderDetail.setOrder(order);
+            orderDetail.setOrder(order1);
             orderDetail.setQuantity(item.getQuantity());
             orderDetail.setProduct(item.getProduct());
             orderDetail.setUnitPrice(item.getProduct().getCostPrice());
@@ -52,13 +52,16 @@ public class OrderServiceImpl implements OrderService {
             orderDetailList.add(orderDetail);
             cartItemRepository.delete(item);
         }
-        order.setOrderDetailList(orderDetailList);
+        order1.setOrderDetailList(orderDetailList);
         cart.setCartItem(new HashSet<>());
         cart.setTotalItems(0);
         cart.setTotalPrices(0);
+        order1.setCity(order.getCity());
+        order1.setDistrict(order.getDistrict());
+        order1.setWard(order.getWard());
+        order1.setAddress(order.getAddress());
         cartRepository.save(cart);
-        orderRepository.save(order);
-
+        orderRepository.save(order1);
     }
 
     @Override
