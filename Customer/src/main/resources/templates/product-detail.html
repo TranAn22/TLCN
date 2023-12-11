@@ -69,7 +69,35 @@
             </div>
         </div>
     </div>
-
+    <div>
+        <table class="table table-striped" th:if="${size > 0}">
+            <thead>
+            <tr>
+                <th scope="col">CustomerName</th>
+                <th scope="col">Rate</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Date</th>
+            </tr>
+            </thead>
+<!--            <tbody>-->
+<!--            <tr th:each="product : ${products}">-->
+<!--                <th scope="row" th:text="${product.name}"></th>-->
+<!--                <td th:text="${product.category.name}"></td>-->
+<!--                <td th:text="${product.costPrice}"></td>-->
+<!--                <td th:text="${product.currentQuantity}"></td>-->
+<!--                <td><img src="" style="height: 40px; width: 40px;"-->
+<!--                         th:src="*{'data:image/jpeg;base64,' + {product.image}}"></td>-->
+<!--                <td><a th:href="@{/update-product/{id} (id = ${product.id})}" class="btn btn-primary">Update</a></td>-->
+<!--                <td>-->
+<!--                    <a th:if="${product.activated == false}" th:href="@{/enable-product/{id} (id = ${product.id})}"-->
+<!--                       class="btn btn-warning">Enable</a>-->
+<!--                    <a th:if="${product.deleted == false}" th:href="@{/delete-product/{id} (id = ${product.id})}"-->
+<!--                       class="btn btn-danger">Delete</a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+        </table>
+    </div>
     <div class="row my-5">
         <div class="col-lg-12">
             <div class="title-all text-center">

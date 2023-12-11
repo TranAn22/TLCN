@@ -1,15 +1,8 @@
 package com.ecommerce.library.library.service.impl;
 
-import com.ecommerce.library.library.model.CartItem;
-import com.ecommerce.library.library.model.Order;
-import com.ecommerce.library.library.model.OrderDetail;
-import com.ecommerce.library.library.model.ShoppingCart;
-import com.ecommerce.library.library.repository.CartItemRepository;
-import com.ecommerce.library.library.repository.OrderDetailRepository;
-import com.ecommerce.library.library.repository.OrderRepository;
-import com.ecommerce.library.library.repository.ShoppingCartRepository;
+import com.ecommerce.library.library.model.*;
+import com.ecommerce.library.library.repository.*;
 import com.ecommerce.library.library.service.OrderService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +22,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
     private ShoppingCartRepository cartRepository;
 
     @Autowired
@@ -39,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
         Order order1=new Order();
         order1.setOrderStatus("PENDING");
         order1.setOrderDate(new Date());
+        order1.setAccept(false);
         order1.setCustomer(cart.getCustomer());
         order1.setTotalPrice(cart.getTotalPrices());
         List<OrderDetail> orderDetailList=new ArrayList<>();
@@ -65,15 +61,29 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void acceptOrder(Long id) {
-        Order order=orderRepository.getById(id);
+    public Order acceptOrder(Long id) {
+        Order order = orderRepository.getById(id);
+        order.setAccept(true);
         order.setDeliveryDate(new Date());
-        order.setOrderStatus("SHIPPING");
-        orderRepository.save(order);
+        order.setOrderStatus("ACCEPT");
+        return orderRepository.save(order);
     }
+
 
     @Override
     public void cancelOrder(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Order> findAll(String username) {
+        Customer customer = customerRepository.findByUsername(username);
+        List<Order> orders = customer.getOrders();
+        return orders;
+    }
+
+    @Override
+    public List<Order> findALlOrders() {
+        return orderRepository.findAll();
     }
 }

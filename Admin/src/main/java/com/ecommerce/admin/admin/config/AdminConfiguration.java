@@ -40,8 +40,9 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/*").permitAll()
-                .antMatchers("/admin/*")
+        http.sessionManagement().enableSessionUrlRewriting(true).and().
+                authorizeRequests().antMatchers("/**").permitAll()
+                .antMatchers("/admin/**")
                 .hasAuthority("ADMIN")
                 .and()
                 .formLogin()

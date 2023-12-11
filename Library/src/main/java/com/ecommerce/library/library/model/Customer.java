@@ -44,6 +44,9 @@ public class Customer {
     private ShoppingCart shoppingCart;
     @OneToMany(mappedBy = "customer")
     private List<Order> orders;
+    @OneToMany(mappedBy = "customer")
+    private List<Rating> ratings;
+    
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable( name = "customers_roles",

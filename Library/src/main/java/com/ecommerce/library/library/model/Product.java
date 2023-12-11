@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,6 +24,8 @@ public class Product {
     private double costPrice;
     private double salePrice;
     private int currentQuantity;
+    @OneToMany(mappedBy = "product")
+    private List<Rating> rating;
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB")
     private String image;

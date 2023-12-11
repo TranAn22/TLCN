@@ -34,7 +34,21 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;
+    private boolean isAccept;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetail> orderDetailList;
+//    @Override
+//    public String toString() {
+//        return "Order{" +
+//                "id=" + id +
+//                ", orderDate=" + orderDate +
+//                ", deliveryDate=" + deliveryDate +
+//                ", totalPrice=" + totalPrice +
+//                ", tax='" + tax + '\'' +
+//                ", paymentMethod='" + paymentMethod + '\'' +
+//                ", customer=" + customer.getUsername() +
+//                ", orderDetailList=" + orderDetailList.size() +
+//                '}';
+//    }
 }

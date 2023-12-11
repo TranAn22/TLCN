@@ -4,6 +4,7 @@ import com.ecommerce.library.library.model.Category;
 import com.ecommerce.library.library.model.Product;
 import com.ecommerce.library.library.service.CategoryService;
 import com.ecommerce.library.library.service.ProductService;
+import com.ecommerce.library.library.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,10 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
+    private RatingService ratingService;
+    @Autowired
     private CategoryService categoryService;
+
 
     @GetMapping("/products")
     public String products(Model model){
