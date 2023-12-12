@@ -1,6 +1,9 @@
 package com.ecommerce.admin.admin.controller;
 
 import com.ecommerce.library.library.model.Order;
+import com.ecommerce.library.library.model.OrderDetail;
+import com.ecommerce.library.library.repository.OrderDetailRepository;
+import com.ecommerce.library.library.service.OrderDetailService;
 import com.ecommerce.library.library.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,14 +21,17 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderDetailService orderDetailService;
 
     @GetMapping("/orders")
     public String getAll(Model model, Principal principal) {
         if (principal == null) {
             return "redirect:/login";
         } else {
-            List<Order> orderList = orderService.findALlOrders();
+            List<Order> orderList = orderService.findAllOrders();
+            List<OrderDetail> orderDetailList=orderDetailService.findAllOrderDeatails();
             model.addAttribute("orders", orderList);
+            model.addAttribute("orderDetails",orderDetailList);
             return "orders";
         }
     }

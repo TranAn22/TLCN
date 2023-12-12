@@ -28,4 +28,16 @@ public class OrderDetail {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Product product;
+
+    @Override
+    public String toString() {
+        return "OrderDetail{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", totalPrice=" + totalPrice +
+                ", unitPrice=" + unitPrice +
+                ", order=" + order +
+                ", product=" + product +
+                '}';
+    }
 }

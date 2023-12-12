@@ -12,5 +12,5 @@ public interface OrderService {
 
     List<Order> findAll(String username);
 
-    List<Order> findALlOrders();
+    List<Order> findAllOrders();
 }

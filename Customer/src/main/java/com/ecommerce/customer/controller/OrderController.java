@@ -80,4 +80,17 @@ public class OrderController {
         return "redirect:/order";
     }
 
+    @RequestMapping(value = "/cancel-order", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String cancelOrder(Long id, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        } else {
+            orderService.cancelOrder(id);
+            return "redirect:/order";
+        }
+    }
+
+
+
+
 }
