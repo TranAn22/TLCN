@@ -199,4 +199,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.filterLowPrice();
     }
 
+    @Override
+    public List<Product> searchProducts(String keyword) {
+        return productRepository.searchProducts(keyword);
+    }
+
 }

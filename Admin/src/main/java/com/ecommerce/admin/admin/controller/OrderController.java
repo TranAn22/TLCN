@@ -29,9 +29,9 @@ public class OrderController {
             return "redirect:/login";
         } else {
             List<Order> orderList = orderService.findAllOrders();
-            List<OrderDetail> orderDetailList=orderDetailService.findAllOrderDeatails();
+            List<OrderDetail> orderDetailList = orderDetailService.findAllOrderDeatails();
             model.addAttribute("orders", orderList);
-            model.addAttribute("orderDetails",orderDetailList);
+            model.addAttribute("orderDetails", orderDetailList);
             return "orders";
         }
     }
@@ -42,11 +42,18 @@ public class OrderController {
         if (principal == null) {
             return "redirect:/login";
         } else {
-            orderService.acceptOrder(id);
-            attributes.addFlashAttribute("success", "Order Accepted");
+            try {
+                orderService.acceptOrder(id);
+                attributes.addFlashAttribute("success", "Order Accepted");
+
+            } catch (RuntimeException e) {
+                attributes.addFlashAttribute("error", e.getMessage());
+            }
             return "redirect:/orders";
         }
     }
+
+
 
     @RequestMapping(value = "/cancel-order", method = {RequestMethod.PUT, RequestMethod.GET})
     public String cancelOrder(Long id, Principal principal) {

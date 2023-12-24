@@ -2,9 +2,11 @@ package com.ecommerce.customer.controller;
 
 import com.ecommerce.library.library.model.Customer;
 import com.ecommerce.library.library.model.Order;
+import com.ecommerce.library.library.model.OrderDetail;
 import com.ecommerce.library.library.model.ShoppingCart;
 import com.ecommerce.library.library.service.CityService;
 import com.ecommerce.library.library.service.CustomerService;
+import com.ecommerce.library.library.service.OrderDetailService;
 import com.ecommerce.library.library.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ public class OrderController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private  OrderDetailService orderDetailService;
     @Autowired
     private OrderService orderService;
 
@@ -56,8 +60,11 @@ public class OrderController {
         }
         String username=principal.getName();
         Customer customer=customerService.findByUsername(username);
+        List<OrderDetail> orderDetailList=orderDetailService.findAllOrderDeatails();
         List<Order> orderList=customer.getOrders();
         model.addAttribute("orders",orderList);
+        model.addAttribute("orderDetails",orderDetailList);
+
         return "order";
     }
 

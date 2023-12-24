@@ -6,6 +6,7 @@ import com.ecommerce.library.library.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -30,16 +31,16 @@ public class OrderServiceImpl implements OrderService {
     private CartItemRepository cartItemRepository;
 
     @Override
-    public void saveOrder(ShoppingCart cart,Order order) {
-        Order order1=new Order();
+    public void saveOrder(ShoppingCart cart, Order order) {
+        Order order1 = new Order();
         order1.setOrderStatus("PENDING");
         order1.setOrderDate(new Date());
         order1.setAccept(false);
         order1.setCustomer(cart.getCustomer());
         order1.setTotalPrice(cart.getTotalPrices());
-        List<OrderDetail> orderDetailList=new ArrayList<>();
-        for(CartItem item : cart.getCartItem()){
-            OrderDetail orderDetail=new OrderDetail();
+        List<OrderDetail> orderDetailList = new ArrayList<>();
+        for (CartItem item : cart.getCartItem()) {
+            OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order1);
             orderDetail.setQuantity(item.getQuantity());
             orderDetail.setProduct(item.getProduct());
@@ -62,10 +63,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order acceptOrder(Long id) {
+
         Order order = orderRepository.getById(id);
         order.setAccept(true);
         order.setDeliveryDate(new Date());
         order.setOrderStatus("ACCEPT");
+        for (OrderDetail orderDetail : order.getOrderDetailList()) {
+            if (orderDetail.getProduct().getCurrentQuantity() >= orderDetail.getQuantity()) {
+                orderDetail.getProduct().setCurrentQuantity(orderDetail.getProduct().getCurrentQuantity()
+                        - orderDetail.getQuantity());
+            }
+            else {
+                throw new RuntimeException("Out of Quantity");
+            }
+        }
         return orderRepository.save(order);
     }
 
@@ -81,7 +92,6 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = customer.getOrders();
         return orders;
     }
-
 
 
     @Override

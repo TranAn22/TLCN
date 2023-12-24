@@ -54,16 +54,25 @@
                 <div class="single-product-details">
                     <h2 th:text="${product.name}"></h2>
                     <h5 th:text="'$' + ${product.costPrice}"></h5>
+                    <h5 th:text="'Current Quantity ' + ${product.currentQuantity}"></h5>
                     <h4>Short Description:</h4>
                     <p th:text="${product.description}"></p>
 
                     <div class="price-box-bar">
                         <div class="cart-and-bay-btn">
-                            <form th:action="@{/add-to-cart}" method="post">
-                                <input type="hidden" th:value="${product.id}" name="id">
-                                <input type="submit" class="cart" value="Add to Cart">
+                            <form th:action="@{/add-to-cart}" method="post" th:object="${product}">
+                                <input type="hidden" th:field="*{id}">
+
+                                <button type="submit" class="cart" th:if="${product.currentQuantity > 0}">
+                                    Add to Cart
+                                </button>
+
+                                <p th:if="${product.currentQuantity <= 0}" style="color: red; font-size: 20px;">
+                                    OUT OF QUANTITY
+                                </p>
                             </form>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -105,7 +114,7 @@
             </div>
             <div class="featured-products-box owl-carousel owl-theme">
                 <div class="item" th:each="productRelated : ${products}">
-                    <form th:action="@{/add-to-cart}" method="post">
+                    <form  th:action="@{/add-to-cart}" method="post">
                         <div class="products-single fix">
                             <div class="box-img-hover">
                                 <div class="image-container">
@@ -119,7 +128,8 @@
                                                title="View"><i class="fas fa-eye"></i></a></li>
                                     </ul>
                                     <input type="hidden" th:value="${product.id}" name="id">
-                                    <input type="submit" class="cart" value="Add to Cart">
+                                    <input th:if="${product.currentQuantity>0}" type="submit" class="cart" value="Add to Cart">
+                                    <input th:if="${product.currentQuantity<=0}" type="button" class="cart" value="OUT OF QUANTITY">
                                 </div>
                             </div>
                             <div class="why-text">

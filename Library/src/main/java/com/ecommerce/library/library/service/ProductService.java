@@ -36,5 +36,6 @@ public interface ProductService {
     List<Product> filterHighPrice();
 
     List<Product> filterLowPrice();
+    List<Product> searchProducts(String keyword);
 
 }

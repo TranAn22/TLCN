@@ -97,7 +97,8 @@
                                                 </ul>
 
                                                 <input type="hidden" th:value="${product.id}" name="id">
-                                                <input type="submit" class="cart" value="Add to Cart">
+                                                <input th:if="${product.currentQuantity>0}" type="submit" class="cart" value="Add to Cart">
+                                                <input th:if="${product.currentQuantity<=0}" type="button" class="cart" value="OUT OF QUANTITY">
                                             </div>
                                         </div>
                                         <div class="why-text">

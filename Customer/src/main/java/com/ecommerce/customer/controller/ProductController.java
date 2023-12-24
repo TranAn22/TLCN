@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -79,5 +80,14 @@ public class ProductController {
         model.addAttribute("categories", categories);
         return "filter-low-price";
     }
-
+    @GetMapping("/search-product")
+    public String searchProduct(@RequestParam("keyword") String keyword, Model model) {
+        List<CategoryDto> categoryDtoList = categoryService.getCategoryAndProduct();
+        List<Product> products= productService.searchProducts(keyword);
+        List<Product> listViewProducts = productService.listViewProducts();
+        model.addAttribute("categories", categoryDtoList);
+        model.addAttribute("viewProducts", listViewProducts);
+        model.addAttribute("products", products);
+        return "shop";
+    }
 }

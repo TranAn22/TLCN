@@ -46,8 +46,8 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr th:each="order :${orders}">
+                            <tbody th:each="order :${orders}">
+                            <tr >
                                 <td class="order-date">
                                     <span><b th:text="${order.orderDate}"></b></span>
                                 </td>
@@ -71,7 +71,7 @@
                                     <span></span>Cash</span>
                                 </td>
                                 <td>
-                                    <a th:if="${order.accept} != false" th:href="@{/cancel-order(id = ${order.id})}"
+                                    <a th:if="${order.accept} == false" th:href="@{/cancel-order(id = ${order.id})}"
                                        class="btn btn-primary">Cancel</a>
 <!--                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"-->
 <!--                                         aria-labelledby="exampleModalLabel"-->
@@ -104,6 +104,27 @@
 <!--                                        </form>-->
 <!--                                    </div>-->
 
+                                </td>
+                            </tr>
+                            <tr >
+                                <td>
+                                    <table class="inner-table" border="2" style="margin-left: 50px;">
+                                        <thead>
+                                        <tr>
+                                            <th>OrderDetail ID</th>
+                                            <th>Unit Price</th>
+                                            <!-- Add more headers as needed -->
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="orderDetail : ${orderDetails}" th:if="${orderDetail.order.id == order.id}">
+                                            <td th:text="${orderDetail.id}"></td>
+                                            <td th:text="${orderDetail.unitPrice}"></td>
+                                            <!-- Add more columns as needed -->
+                                        </tr>
+                                        <!-- End of inner table rows for order details -->
+                                        </tbody>
+                                    </table>
                                 </td>
                             </tr>
                             </tbody>
