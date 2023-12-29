@@ -38,6 +38,7 @@
                         <table class="table">
                             <thead>
                             <tr>
+                                <th class="order-id">OrderID</th>
                                 <th class="order-date">Order Date</th>
                                 <th>Delivery Date</th>
                                 <th class="price-pr">Order Status</th>
@@ -48,6 +49,9 @@
                             </thead>
                             <tbody th:each="order :${orders}">
                             <tr >
+                                <td class="order-id">
+                                    <span><b th:text="${order.id}"></b></span>
+                                </td>
                                 <td class="order-date">
                                     <span><b th:text="${order.orderDate}"></b></span>
                                 </td>

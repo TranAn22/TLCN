@@ -1,6 +1,5 @@
 package com.ecommerce.customer.controller;
 
-import com.ecommerce.library.library.dto.ProductDto;
 import com.ecommerce.library.library.model.Category;
 import com.ecommerce.library.library.model.Customer;
 import com.ecommerce.library.library.model.Product;

@@ -40,6 +40,7 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http.sessionManagement().enableSessionUrlRewriting(true).and().
                 authorizeRequests().antMatchers("/**").permitAll()
                 .antMatchers("/admin/**")

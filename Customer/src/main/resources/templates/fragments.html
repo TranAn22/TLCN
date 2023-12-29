@@ -122,6 +122,9 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link open-chat-button" onclick="toggleChat()">Open Chat</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -129,7 +132,7 @@
             <!-- Start Atribute Navigation -->
             <div class="attr-nav">
                 <ul>
-                    <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+
                     <li class="side-menu">
                         <a th:href="@{/cart}">
                             <i class="fa fa-shopping-bag"></i>
@@ -140,44 +143,58 @@
                     </li>
                 </ul>
             </div>
-            <!-- End Atribute Navigation -->
-        </div>
-        <!-- Start Side Menu -->
-        <div class="side">
-            <a href="#" class="close-side"><i class="fa fa-times"></i></a>
-            <li class="cart-box">
-                <ul class="cart-list">
-                    <li>
-                        <a href="#" class="photo"><img th:src="@{/images/noi-that-1.jpg}"
-                                                       class="cart-thumb"
-                                                       alt=""/></a>
-                        <h6><a href="#">NoiThatDep</a></h6>
-                        <p>1 - <span class="price">$80.00</span></p>
-                    </li>
-                    <li>
-                        <a href="#" class="photo"><img
-                                th:src="@{/images/noi-that-2.jpg}"
-                                class="cart-thumb" alt=""/></a>
-                        <h6><a href="#">NoiThatDep</a></h6>
-                        <p>1 - <span class="price">$60.00</span></p>
-                    </li>
-                    <li>
-                        <a href="#" class="photo"><img th:src="@{/images/noi-that-3.jpg}" class="cart-thumb"
-                                                       alt=""/></a>
-                        <h6><a href="#">NoiThatDep</a></h6>
-                        <p>1 - <span class="price">$40.00</span></p>
-                    </li>
-                    <li class="total">
-                        <a href="cart.html" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
-                        <span class="float-right"><strong>Total</strong>: $180.00</span>
-                    </li>
-                </ul>
-            </li>
+            <div id="chat-container">
+                <div id="chat-form">
+                    <div id="chat-messages"></div>
+                    <textarea id="userMessage" rows="4" cols="50" placeholder="Type your message..."></textarea>
+                    <br>
+                    <div id="chat-buttons">
+                        <button id="sendButton" type="button" onclick="sendMessage()">Send</button>
+                        <button id="closeButton" type="button" onclick="toggleChat()">Close</button>
+                    </div>
+                </div>
+
+                <!-- End Atribute Navigation -->
+            </div>
+            <!-- Start Side Menu -->
+            <div class="side">
+                <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+                <li class="cart-box">
+                    <ul class="cart-list">
+                        <li>
+                            <a href="#" class="photo"><img th:src="@{/images/noi-that-1.jpg}"
+                                                           class="cart-thumb"
+                                                           alt=""/></a>
+                            <h6><a href="#">NoiThatDep</a></h6>
+                            <p>1 - <span class="price">$80.00</span></p>
+                        </li>
+                        <li>
+                            <a href="#" class="photo"><img
+                                    th:src="@{/images/noi-that-2.jpg}"
+                                    class="cart-thumb" alt=""/></a>
+                            <h6><a href="#">NoiThatDep</a></h6>
+                            <p>1 - <span class="price">$60.00</span></p>
+                        </li>
+                        <li>
+                            <a href="#" class="photo"><img th:src="@{/images/noi-that-3.jpg}" class="cart-thumb"
+                                                           alt=""/></a>
+                            <h6><a href="#">NoiThatDep</a></h6>
+                            <p>1 - <span class="price">$40.00</span></p>
+                        </li>
+                        <li class="total">
+                            <a href="cart.html" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                            <span class="float-right"><strong>Total</strong>: $180.00</span>
+                        </li>
+                    </ul>
+                </li>
+            </div>
         </div>
         <!-- End Side Menu -->
     </nav>
     <!-- End Navigation -->
 </header>
+
+
 <!--Navigation Product page-->
 <div class="product-item-filter row" th:fragment="nav-product">
     <div class="col-12 col-sm-8 text-center text-sm-left">
@@ -188,7 +205,6 @@
                 <option data-display="Select">Nothing</option>
                 <option value="http://localhost:8020/shop/high-price">High Price → Low Price</option>
                 <option value="http://localhost:8020/shop/low-price">Low Price → High Price</option>
-                <option data-display="Select">Best Selling</option>
             </select>
         </div>
         <p>Showing all results</p>
@@ -206,6 +222,8 @@
         </ul>
     </div>
 </div>
+
+
 <!-- Start Top Search -->
 <div class="top-search" th:fragment="top-search">
     <div class="container">
@@ -282,6 +300,8 @@
 
 <!-- End Feed  -->
 
+<!-- Add this floating chat form -->
+
 
 <!-- Start Footer  -->
 <footer th:fragment="footer">
@@ -323,6 +343,7 @@
                         </ul>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -330,6 +351,69 @@
 
 <!-- ALL JS FILES -->
 <div th:fragment="script">
+    <style>
+        #chat-container {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            right: 150px;
+            z-index: 1000;
+            width: 500px; /* Set your preferred width */
+            height: 500px;
+            background-color: #1e0505; /* Solid background color */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.99);
+            overflow: hidden;
+            color: #ffffff; /* Text color */
+
+        }
+
+        #chat-messages {
+            max-height: 400px; /* Increased max height for chat history */
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        #userMessage {
+            width: calc(100% - 20px);
+            margin-bottom: 10px;
+            margin-top: calc(100% - 200px);
+        }
+
+        #chat-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        #sendButton,
+        #closeButton {
+            width: 48%; /* Adjust the width of buttons */
+            background-color: #000000; /* Set button background color */
+            color: #abdde5; /* Set button text color */
+            border: none;
+            border-radius: 5px;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .open-chat-button {
+            display: block;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            transition: background-color 0.3s;
+            cursor: pointer
+        }
+
+        .open-chat-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
@@ -345,6 +429,54 @@
     <script th:src="@{/js/form-validator.min.js}"></script>
     <script th:src="@{/js/contact-form-script.js}"></script>
     <script th:src="@{/js/custom.js}"></script>
+
+    <script>
+        let chatContainer = document.getElementById('chat-container');
+        let chatMessages = document.getElementById('chat-messages');
+        let userMessageInput = document.getElementById('userMessage');
+
+        function toggleChat() {
+            chatContainer.style.display = chatContainer.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function sendMessage() {
+            let userMessage = userMessageInput.value;
+
+            // Display the user's message in the chat
+            appendMessage('User', userMessage);
+
+            // Add logic to send the userMessage to your backend API (replace with your actual API endpoint)
+            fetch('/shop/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userMessage: userMessage,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the assistant's response in the chat
+                    appendMessage('Assistant', data.choices[0].message.content);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            // Clear the input field
+            userMessageInput.value = '';
+        }
+
+        function appendMessage(sender, message) {
+            let messageElement = document.createElement('div');
+            messageElement.textContent = `${sender}: ${message}`;
+            chatMessages.appendChild(messageElement);
+            // Scroll to the bottom to show the latest message
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
 </div>
+
 </body>
 </html>

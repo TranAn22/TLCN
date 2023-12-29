@@ -18,6 +18,7 @@
 	</properties>
 	<dependencies>
 
+
 		<dependency>
 			<groupId>com.ecommerce.library</groupId>
 			<artifactId>Library</artifactId>
@@ -26,6 +27,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
