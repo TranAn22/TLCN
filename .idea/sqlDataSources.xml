@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="cbd6029b-8390-4c29-bbc1-4932f37f6e1f" name="@localhost Mapping">
+      <data-sources db="cdfc4e06-01bf-4a30-af5f-0fd182a25e0d" />
+      <scope>
+        <node kind="schema" qname="ecommerce_springboot" />
+      </scope>
+    </mapping>
+  </component>
+</project>
