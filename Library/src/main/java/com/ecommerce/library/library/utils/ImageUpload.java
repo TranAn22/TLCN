@@ -10,28 +10,29 @@ import java.nio.file.StandardCopyOption;
 
 @Component
 public class ImageUpload {
-    private final String UPLOAD_FOLDER="C:\\HocTap\\JavaforIntelliJ\\Ecommerce_Springboot\\Admin\\src\\main\\resources\\static\\img\\image_product";
+    private final String UPLOAD_FOLDER = "static/img/image_product";
 
-    public boolean uploadImage(MultipartFile imageProduct){
+    public boolean uploadImage(MultipartFile imageProduct) {
         boolean isUpload = false;
         try {
+            String absolutePath = getClass().getClassLoader().getResource(UPLOAD_FOLDER).getPath();
             Files.copy(imageProduct.getInputStream(),
-                    Paths.get(UPLOAD_FOLDER + File.separator, imageProduct.getOriginalFilename()),
+                    Paths.get(absolutePath + File.separator, imageProduct.getOriginalFilename()),
                     StandardCopyOption.REPLACE_EXISTING);
             isUpload = true;
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return isUpload;
     }
 
-    public boolean checkExisted(MultipartFile imageProduct){
+    public boolean checkExisted(MultipartFile imageProduct) {
         boolean isExisted = false;
         try {
-            File file = new File(UPLOAD_FOLDER + "\\" + imageProduct.getOriginalFilename());
+            String absolutePath = getClass().getClassLoader().getResource(UPLOAD_FOLDER).getPath();
+            File file = new File(absolutePath + File.separator + imageProduct.getOriginalFilename());
             isExisted = file.exists();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return isExisted;
