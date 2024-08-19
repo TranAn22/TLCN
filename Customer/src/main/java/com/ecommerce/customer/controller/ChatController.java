@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 public class ChatController {
 
-    private static final String OPENAI_API_KEY = "a";
+    private static final String OPENAI_API_KEY = "a ";
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
     @PostMapping("/chat")
